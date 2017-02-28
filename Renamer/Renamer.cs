@@ -124,7 +124,7 @@ namespace regexKSP {
 					return;
 				}
 			}
-	        UnityEngine.Random.seed = (int)(System.DateTime.Now.Millisecond * kerbal.name.GetHashCode());
+			UnityEngine.Random.InitState(System.DateTime.Now.Millisecond * kerbal.name.GetHashCode());
 
 			if(generateNewStats) {
 				if(kerbal.type == ProtoCrewMember.KerbalType.Crew || kerbal.type == ProtoCrewMember.KerbalType.Applicant) {
@@ -152,7 +152,7 @@ namespace regexKSP {
 
 			string name = this.getName(kerbal);
 			if(name.Length > 0) {
-	        	kerbal.name = name;
+	        	kerbal.ChangeName(name);
 			}
 	    }
 
