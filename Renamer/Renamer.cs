@@ -130,15 +130,29 @@ namespace regexKSP {
             else // see if any of the originals are still around
             {
                 if (HighLogic.CurrentGame.CrewRoster["Jebediah Kerman"] != null)
-                {
+                {                    
                     var jeb = HighLogic.CurrentGame.CrewRoster["Jebediah Kerman"];
                     RerollKerbal(jeb);
+                    KerbalRoster.SetExperienceTrait(jeb, KerbalRoster.pilotTrait);
                 }
                 if (HighLogic.CurrentGame.CrewRoster["Bill Kerman"] != null)
                 {
                     var bill = HighLogic.CurrentGame.CrewRoster["Bill Kerman"];
                     RerollKerbal(bill);
-                }                
+                    KerbalRoster.SetExperienceTrait(bill, KerbalRoster.engineerTrait);
+                }
+                if (HighLogic.CurrentGame.CrewRoster["Bob Kerman"] != null)
+                {
+                    var bob = HighLogic.CurrentGame.CrewRoster["Bob Kerman"];
+                    RerollKerbal(bob);
+                    KerbalRoster.SetExperienceTrait(bob, KerbalRoster.scientistTrait);
+                }
+                if (HighLogic.CurrentGame.CrewRoster["Valentina Kerman"] != null)
+                {
+                    var val = HighLogic.CurrentGame.CrewRoster["Valentina Kerman"];
+                    RerollKerbal(val);
+                    KerbalRoster.SetExperienceTrait(val, KerbalRoster.pilotTrait);
+                }
             }
 
             RerollKerbal(kerbal);
