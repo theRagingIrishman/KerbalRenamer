@@ -121,12 +121,13 @@ namespace regexKSP {
 	    public void OnKerbalAdded(ProtoCrewMember kerbal)
         {
 
-			List<string> originalNames = new List<string>();
-			originalNames.Add("Jebediah Kerman");
-			originalNames.Add("Bill Kerman");
-			originalNames.Add("Bob Kerman");
-			originalNames.Add("Valentina Kerman");
-            if (preserveOriginals)
+			List<string> originalNames = new List<string> {
+				"Jebediah Kerman",
+				"Bill Kerman",
+				"Bob Kerman",
+				"Valentina Kerman"
+			};
+			if (preserveOriginals)
             {
 				if (originalNames.Contains(kerbal.name)) 
                 {
@@ -137,7 +138,6 @@ namespace regexKSP {
             {
 				foreach (var originalKerbalName in originalNames)
 				{
-
 					if (HighLogic.CurrentGame.CrewRoster[originalKerbalName] != null)
 					{
 						var origKerbal = HighLogic.CurrentGame.CrewRoster[originalKerbalName];
