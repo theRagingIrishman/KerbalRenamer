@@ -118,45 +118,73 @@ namespace regexKSP {
 	        GameEvents.onKerbalAdded.Add(new EventData<ProtoCrewMember>.OnEvent(OnKerbalAdded));
 		}
 
-	    public void OnKerbalAdded(ProtoCrewMember kerbal) {
-			if(preserveOriginals) {
-				if(kerbal.name == "Jebediah Kerman" || kerbal.name == "Bill Kerman" || kerbal.name == "Bob Kerman" || kerbal.name == "Valentina Kerman") {
+		public void OnKerbalAdded(ProtoCrewMember kerbal)
+		{
+
+			List<string> originalNames = new List<string> {
+				"Jebediah Kerman",
+				"Bill Kerman",
+				"Bob Kerman",
+				"Valentina Kerman"
+			};
+			if (preserveOriginals) {
+				if (originalNames.Contains(kerbal.name)) {
 					return;
 				}
 			}
+			else // see if any of the originals are still around
+			{
+				foreach (var originalKerbalName in originalNames) {
+					if (HighLogic.CurrentGame.CrewRoster[originalKerbalName] != null) {
+						var origKerbal = HighLogic.CurrentGame.CrewRoster[originalKerbalName];
+						var origTrait = origKerbal.trait;
+						RerollKerbal(origKerbal);
+						KerbalRoster.SetExperienceTrait(origKerbal, origTrait);
+					}
+				}
+			}
+
+			RerollKerbal(kerbal);
+		}
+
+		private void RerollKerbal(ProtoCrewMember kerbal)
+		{
 			UnityEngine.Random.InitState(System.DateTime.Now.Millisecond * kerbal.name.GetHashCode());
 
-			if(generateNewStats) {
-				if(kerbal.type == ProtoCrewMember.KerbalType.Crew || kerbal.type == ProtoCrewMember.KerbalType.Applicant) {
+			if (generateNewStats) {
+				if (kerbal.type == ProtoCrewMember.KerbalType.Crew || kerbal.type == ProtoCrewMember.KerbalType.Applicant) {
 					// generate some new stats
 					kerbal.stupidity = rollStupidity();
 					kerbal.courage = rollCourage();
 					kerbal.isBadass = (UnityEngine.Random.Range(0.0f, 1.0f) < badassPercent);
-	
+
 					float rand = UnityEngine.Random.Range(0.0f, 1.0f);
-					if(rand < 0.33f) {
+					if (rand < 0.33f) {
 						KerbalRoster.SetExperienceTrait(kerbal, "Pilot");
-					} else if(rand < 0.66f) {
+					}
+					else if (rand < 0.66f) {
 						KerbalRoster.SetExperienceTrait(kerbal, "Engineer");
-					} else {
+					}
+					else {
 						KerbalRoster.SetExperienceTrait(kerbal, "Scientist");
 					}
-	
-					if(UnityEngine.Random.Range(0.0f, 1.0f) < femalePercent) {
+
+					if (UnityEngine.Random.Range(0.0f, 1.0f) < femalePercent) {
 						kerbal.gender = ProtoCrewMember.Gender.Female;
-					} else {
+					}
+					else {
 						kerbal.gender = ProtoCrewMember.Gender.Male;
 					}
 				}
 			}
 
 			string name = this.getName(kerbal);
-			if(name.Length > 0) {
-	        	kerbal.ChangeName(name);
+			if (name.Length > 0) {
+				kerbal.ChangeName(name);
 			}
-	    }
+		}
 
-	    private string getName(ProtoCrewMember c) {
+		private string getName(ProtoCrewMember c) {
 	        string firstName = "";
 			string lastName = "";
 
