@@ -14,8 +14,8 @@ namespace gpp {
 		bool useBellCurveMethod = true;
 		bool dontInsultMe = true;
 		bool preserveOriginals = true;
-		bool generateNewStats = true;
-		public string cultureDescriptor = "Culture";
+        bool generateNewStats = true;
+		public string cultureDescriptor = "";
 		Culture[] cultures = {};
 
 	    public static KerbalRenamer Instance {
@@ -89,7 +89,7 @@ namespace gpp {
 	        GameEvents.onKerbalAdded.Add(new EventData<ProtoCrewMember>.OnEvent(OnKerbalAdded));
 		}
 
-		public void OnKerbalAdded(ProtoCrewMember kerbal) {
+		public void OnKerbalAdded(ProtoCrewMember kerbal) { //this is the part irishman changed
 
 			List<string> originalNames = new List<string> {
 				"Jebediah Kerman",
@@ -98,17 +98,49 @@ namespace gpp {
 				"Valentina Kerman"
 			};
 			if (preserveOriginals) {
-				if (originalNames.Contains(kerbal.name)) {
-					return;
+				foreach (string originalKerbalName in originalNames)
+				{
+					if (HighLogic.CurrentGame.CrewRoster[originalKerbalName] != null)
+					{
+						ProtoCrewMember origKerbal = HighLogic.CurrentGame.CrewRoster[originalKerbalName];
+						if (origKerbal.name == "Jebediah Kerman")
+						{
+							origKerbal.ChangeName("Jebediah Gaelan");
+						}
+						if (origKerbal.name == "Bill Kerman")
+						{
+							origKerbal.ChangeName("Bill Gaelan");
+						}
+						if (origKerbal.name == "Bob Kerman")
+						{
+							origKerbal.ChangeName("Bob Gaelan");
+						}
+						if (origKerbal.name == "Valentina Kerman")
+						{
+							origKerbal.ChangeName("Valentina Gaelan");
+						}
+					}
 				}
 			}
 			else /* see if any of the originals are still around */ {
-				foreach (var originalKerbalName in originalNames) {
+				foreach (string originalKerbalName in originalNames) {
 					if (HighLogic.CurrentGame.CrewRoster[originalKerbalName] != null) {
-						var origKerbal = HighLogic.CurrentGame.CrewRoster[originalKerbalName];
-						var origTrait = origKerbal.trait;
-						RerollKerbal(origKerbal);
-						KerbalRoster.SetExperienceTrait(origKerbal, origTrait);
+						ProtoCrewMember origKerbal = HighLogic.CurrentGame.CrewRoster[originalKerbalName];
+                        if (origKerbal.name == "Jebediah Kerman") {
+                            origKerbal.ChangeName("Galileo Gaelan");
+                        }
+						if (origKerbal.name == "Bill Kerman")
+						{
+							origKerbal.ChangeName("Jade Maar Gaelan");
+						}
+						if (origKerbal.name == "Bob Kerman")
+						{
+							origKerbal.ChangeName("Bobert Gaelan");
+						}
+						if (origKerbal.name == "Valentina Kerman")
+						{
+							origKerbal.ChangeName("Poodmund Gaelan");
+						}
 					}
 				}
 			}
